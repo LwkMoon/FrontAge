@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ product_name }} — Dashboard</title>
+<meta name="description" content="{{ meta_description }}">
+<link rel="icon" href="{{ favicon }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+{% if inline_css %}<style>{{ css_content | safe }}</style>{% else %}<link rel="stylesheet" href="style.css">{% endif %}
+<script type="application/ld+json">{{ json_ld | safe }}</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<div class="dash-shell">
+  <aside class="dash-sidebar">
+    <div class="dash-brand">
+      {% if logo_data_uri %}<img src="{{ logo_data_uri }}" alt="{{ product_name }}" class="dash-logo">
+      {% else %}<span class="dash-logo-fallback">{{ config.icon_svg | safe }}</span>{% endif %}
+      <span>{{ product_name }}</span>
+    </div>
+    <nav class="dash-nav">
+      {% for item in nav_items %}
+      <a href="#" class="dash-nav-item {{ 'active' if loop.first else '' }}">{{ item }}</a>
+      {% endfor %}
+    </nav>
+  </aside>
+
+  <main class="dash-main" id="main-content">
+    <div class="dash-topbar">
+      <div class="dash-search">Search&hellip;</div>
+      <div class="dash-topbar-right">
+        <span class="demo-badge">SAMPLE DATA</span>
+        <span class="dash-avatar"></span>
+      </div>
+    </div>
+
+    <div class="dash-content">
+      <section class="dash-welcome">
+        <div>
+          <span class="eyebrow">{{ copy.headline }}</span>
+          <h1>{{ copy.welcome_message }}</h1>
+          <p>{{ copy.tagline }}</p>
+        </div>
+        <a class="btn btn-primary" href="#">{{ copy.cta_text }}</a>
+      </section>
+
+      {% if stat_cards %}
+      <section class="dash-stats">
+        {% for card in stat_cards %}
+        <div class="dash-stat-card">
+          <span class="dash-stat-label">{{ card.label }}</span>
+          <span class="dash-stat-value">{{ card.value }}</span>
+          <span class="dash-stat-trend {{ card.trend_direction }}">
+            {{ '\u25b2' if card.trend_direction == 'up' else '\u25bc' }} {{ card.trend_display }}
+          </span>
+        </div>
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      <section class="dash-grid">
+        <div class="dash-panel">
+          <h3>Weekly trend</h3>
+          <div class="dash-chart">
+            {% for bar in weekly_bars %}<div class="dash-bar" style="height: {{ bar }}%"></div>{% endfor %}
+          </div>
+        </div>
+
+        <div class="dash-panel">
+          <h3>Recent activity</h3>
+          <ul class="dash-activity">
+            {% for row in activity_rows %}
+            <li><span>{{ row.label }}</span><span class="dash-activity-time">{{ row.time }}</span></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+
+      <p class="dash-footnote">
+        This is a static UI mockup. Every number on this page is sample data
+        generated for preview purposes, not a connected data source.
+      </p>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

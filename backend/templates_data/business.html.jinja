@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ business_name }}{% if city %} | {{ city }}{% endif %}</title>
+<meta name="description" content="{{ meta_description }}">
+<meta property="og:title" content="{{ business_name }}">
+<meta property="og:description" content="{{ meta_description }}">
+<meta property="og:type" content="business.business">
+{% if logo_data_uri %}<meta property="og:image" content="{{ logo_data_uri }}">{% endif %}
+<link rel="icon" href="{{ favicon }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+{% if inline_css %}<style>{{ css_content | safe }}</style>{% else %}<link rel="stylesheet" href="style.css">{% endif %}
+<script type="application/ld+json">{{ json_ld | safe }}</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="site-nav container">
+  <span class="logo">
+    {% if logo_data_uri %}<img src="{{ logo_data_uri }}" alt="{{ business_name }} logo" class="logo-img">{% endif %}
+    <span>{{ business_name }}</span>
+  </span>
+  <a class="nav-cta" href="{{ whatsapp_link }}" target="_blank" rel="noopener">{{ copy.cta_text }}</a>
+</nav>
+
+<main id="main-content">
+
+<header class="hero container">
+  <span class="eyebrow">{{ config.label }}{% if city %} &middot; {{ city }}{% endif %}</span>
+  <h1>{{ copy.headline }}</h1>
+  <p>{{ copy.tagline }}</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{{ whatsapp_link }}" target="_blank" rel="noopener">{{ copy.cta_text }}</a>
+    {% if phone %}<a class="btn btn-secondary" href="tel:{{ phone }}">Call {{ phone }}</a>{% endif %}
+  </div>
+</header>
+
+<section class="section container">
+  <div class="section-head">
+    <span class="eyebrow">About</span>
+    <h2>A little about us</h2>
+  </div>
+  <p class="about-text">{{ copy.about }}</p>
+</section>
+
+<section class="section container">
+  <div class="section-head">
+    <span class="eyebrow">{{ config.highlight_section_label }}</span>
+    <h2>{{ config.highlight_section_label }}</h2>
+  </div>
+  <div class="{{ 'highlights-grid' if config.layout == 'grid' else 'highlights-list' }}">
+    {% for item in copy.highlights %}
+    <div class="{{ 'highlight-card' if config.layout == 'grid' else 'highlight-row' }}">
+      <div class="highlight-icon">{{ config.icon_svg | safe }}</div>
+      <div>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.description }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section contact-section container">
+  <div class="contact-card">
+    <h2>{{ config.contact_heading }}</h2>
+    <p>{{ config.contact_subtext }}</p>
+    <a class="btn btn-primary" href="{{ whatsapp_link }}" target="_blank" rel="noopener">{{ copy.cta_text }}</a>
+    <div class="contact-details">
+      {% if phone %}<div>{{ phone }}</div>{% endif %}
+      {% if address or city %}<div>{{ address }}{% if address and city %}, {% endif %}{{ city }}</div>{% endif %}
+      {% if hours %}<div>{{ hours }}</div>{% endif %}
+    </div>
+    {% if map_embed_url %}
+    <div class="map-embed">
+      <iframe src="{{ map_embed_url }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="{{ business_name }} location"></iframe>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  &copy; {{ year }} {{ business_name }}. All rights reserved.
+</footer>
+
+</body>
+</html>

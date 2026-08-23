@@ -1,0 +1,7 @@
+flask
+flask-cors
+python-dotenv
+anthropic
+openai
+google-genai
+Pillow

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ name }}{% if role %} — {{ role }}{% endif %}</title>
+<meta name="description" content="{{ meta_description }}">
+<meta property="og:title" content="{{ name }}">
+<meta property="og:description" content="{{ meta_description }}">
+<meta property="og:type" content="profile">
+{% if logo_data_uri %}<meta property="og:image" content="{{ logo_data_uri }}">{% endif %}
+<link rel="icon" href="{{ favicon }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+{% if inline_css %}<style>{{ css_content | safe }}</style>{% else %}<link rel="stylesheet" href="style.css">{% endif %}
+<script type="application/ld+json">{{ json_ld | safe }}</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="site-nav container">
+  <span class="logo">
+    {% if logo_data_uri %}<img src="{{ logo_data_uri }}" alt="{{ name }}" class="logo-img avatar-img">{% endif %}
+    <span>{{ name }}</span>
+  </span>
+  {% if socials.email %}<a class="nav-cta" href="mailto:{{ socials.email }}">{{ copy.cta_text }}</a>{% endif %}
+</nav>
+
+<main id="main-content">
+
+<header class="hero container">
+  <span class="eyebrow">{{ config.label }}{% if location %} &middot; {{ location }}{% endif %}</span>
+  <h1>{{ copy.headline }}</h1>
+  <p>{{ copy.tagline }}</p>
+  <div class="hero-actions">
+    {% if socials.email %}<a class="btn btn-primary" href="mailto:{{ socials.email }}">{{ copy.cta_text }}</a>{% endif %}
+    {% if socials.github %}<a class="btn btn-secondary" href="{{ socials.github }}" target="_blank" rel="noopener">GitHub</a>{% endif %}
+  </div>
+</header>
+
+<section class="section container">
+  <div class="section-head">
+    <span class="eyebrow">About</span>
+    <h2>A little about me</h2>
+  </div>
+  <p class="about-text">{{ copy.about }}</p>
+</section>
+
+{% if skills %}
+<section class="section container">
+  <div class="section-head">
+    <span class="eyebrow">Skills</span>
+    <h2>What I work with</h2>
+  </div>
+  <div class="skills-pills">
+    {% for skill in skills %}<span class="pill">{{ skill }}</span>{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if projects %}
+<section class="section container">
+  <div class="section-head">
+    <span class="eyebrow">Projects</span>
+    <h2>Selected work</h2>
+  </div>
+  <div class="highlights-grid">
+    {% for project in projects %}
+    <div class="highlight-card project-card">
+      <h3>{{ project.name }}</h3>
+      <p>{{ project.description }}</p>
+      {% if project.url %}<a class="project-link" href="{{ project.url }}" target="_blank" rel="noopener">View project &rarr;</a>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="section contact-section container">
+  <div class="contact-card">
+    <h2>Let's work together</h2>
+    <p>{{ copy.about | truncate(90, True, '') }}</p>
+    <div class="social-links">
+      {% if socials.email %}<a href="mailto:{{ socials.email }}">Email</a>{% endif %}
+      {% if socials.github %}<a href="{{ socials.github }}" target="_blank" rel="noopener">GitHub</a>{% endif %}
+      {% if socials.linkedin %}<a href="{{ socials.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>{% endif %}
+      {% if socials.twitter %}<a href="{{ socials.twitter }}" target="_blank" rel="noopener">Twitter</a>{% endif %}
+      {% if socials.website %}<a href="{{ socials.website }}" target="_blank" rel="noopener">Website</a>{% endif %}
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  &copy; {{ year }} {{ name }}. All rights reserved.
+</footer>
+
+</body>
+</html>

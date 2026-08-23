@@ -1,0 +1,48 @@
+<svg width="900" height="360" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#6fb8b3"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="360" fill="#0d1826"/>
+
+  <!-- Browser / React -->
+  <rect x="40" y="140" width="200" height="90" rx="10" fill="#16263a" stroke="#2a4058" stroke-width="1.5"/>
+  <text x="140" y="175" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#eef3f8">React + Vite</text>
+  <text x="140" y="197" text-anchor="middle" font-family="Courier New, monospace" font-size="11" fill="#8fa3ba">frontend/</text>
+  <text x="140" y="214" text-anchor="middle" font-family="Courier New, monospace" font-size="11" fill="#8fa3ba">localhost:5173</text>
+
+  <!-- Flask -->
+  <rect x="350" y="140" width="200" height="90" rx="10" fill="#16263a" stroke="#e0a458" stroke-width="1.5"/>
+  <text x="450" y="175" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#eef3f8">Flask API</text>
+  <text x="450" y="197" text-anchor="middle" font-family="Courier New, monospace" font-size="11" fill="#8fa3ba">backend/app.py</text>
+  <text x="450" y="214" text-anchor="middle" font-family="Courier New, monospace" font-size="11" fill="#8fa3ba">localhost:5000</text>
+
+  <!-- SQLite -->
+  <rect x="660" y="40" width="200" height="80" rx="10" fill="#16263a" stroke="#2a4058" stroke-width="1.5"/>
+  <text x="760" y="72" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#eef3f8">SQLite</text>
+  <text x="760" y="94" text-anchor="middle" font-family="Courier New, monospace" font-size="11" fill="#8fa3ba">drafts.db</text>
+
+  <!-- Anthropic -->
+  <rect x="660" y="250" width="200" height="80" rx="10" fill="#16263a" stroke="#6fb8b3" stroke-width="1.5"/>
+  <text x="760" y="282" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#eef3f8">Anthropic API</text>
+  <text x="760" y="304" text-anchor="middle" font-family="Courier New, monospace" font-size="11" fill="#8fa3ba">copy generation</text>
+
+  <!-- arrows -->
+  <line x1="240" y1="185" x2="345" y2="185" stroke="#6fb8b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="292" y="175" text-anchor="middle" font-family="Courier New, monospace" font-size="10" fill="#6fb8b3">fetch()</text>
+
+  <line x1="550" y1="165" x2="655" y2="95" stroke="#6fb8b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="610" y="115" text-anchor="middle" font-family="Courier New, monospace" font-size="10" fill="#6fb8b3">save draft</text>
+
+  <line x1="550" y1="205" x2="655" y2="275" stroke="#6fb8b3" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="610" y="255" text-anchor="middle" font-family="Courier New, monospace" font-size="10" fill="#6fb8b3">headline, copy</text>
+
+  <!-- Export -->
+  <rect x="140" y="280" width="200" height="60" rx="10" fill="none" stroke="#e0a458" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <text x="240" y="305" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#e0a458">index.html + style.css</text>
+  <text x="240" y="323" text-anchor="middle" font-family="Courier New, monospace" font-size="10" fill="#8fa3ba">downloaded as a .zip</text>
+
+  <line x1="140" y1="230" x2="140" y2="278" stroke="#e0a458" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>
