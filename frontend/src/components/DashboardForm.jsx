@@ -1,4 +1,19 @@
 import { useState } from 'react'
+import {
+  Check,
+  ChevronDown,
+  CircleAlert,
+  Columns3,
+  IdCard,
+  ImageUp,
+  Loader2,
+  Palette,
+  Speech,
+  SlidersHorizontal,
+  SwatchBook,
+  Trash2,
+  Wand2,
+} from 'lucide-react'
 import { uploadImage } from '../api.js'
 
 const COLOR_FIELDS = [
@@ -61,7 +76,7 @@ export default function DashboardForm({ form, setForm, types, palettes, onSubmit
         <span className="step-tag">STEP 01</span> Dashboard details
       </h2>
 
-      <div className="section-label">Identity</div>
+      <div className="section-label"><IdCard aria-hidden="true" />Identity</div>
 
       <label className="field">
         <span className="field-label">Product name</span>
@@ -74,6 +89,7 @@ export default function DashboardForm({ form, setForm, types, palettes, onSubmit
           {types.map((t) => (
             <button type="button" key={t.id} className={`type-chip ${form.typeId === t.id ? 'active' : ''}`} onClick={() => update('typeId', t.id)}>
               {t.label}
+              {form.typeId === t.id && <Check className="type-chip-check" aria-hidden="true" />}
             </button>
           ))}
         </div>
@@ -89,24 +105,34 @@ export default function DashboardForm({ form, setForm, types, palettes, onSubmit
         {form.logoDataUri ? (
           <div className="logo-preview">
             <img src={form.logoDataUri} alt="Uploaded logo preview" />
-            <button type="button" onClick={() => update('logoDataUri', null)}>Remove</button>
+            <button type="button" onClick={() => update('logoDataUri', null)}>
+              <Trash2 aria-hidden="true" />
+              Remove
+            </button>
           </div>
         ) : (
           <label className="file-input">
             <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handleLogoChange} disabled={uploadingLogo} />
+            {uploadingLogo ? <Loader2 className="spin" aria-hidden="true" /> : <ImageUp aria-hidden="true" />}
             <span>{uploadingLogo ? 'Uploading\u2026' : 'Choose an image\u2026'}</span>
           </label>
         )}
-        {uploadError && <p className="error-text small">{uploadError}</p>}
+        {uploadError && <p className="error-text small"><CircleAlert aria-hidden="true" />{uploadError}</p>}
       </div>
 
-      <div className="section-label">Appearance</div>
+      <div className="section-label"><Palette aria-hidden="true" />Appearance</div>
 
       <div className="field">
         <span className="field-label">Color palette</span>
         <div className="palette-mode-toggle">
-          <button type="button" className={!isCustomColors ? 'active' : ''} onClick={() => update('customColors', null)}>Curated</button>
-          <button type="button" className={isCustomColors ? 'active' : ''} onClick={enableCustomColors}>Custom</button>
+          <button type="button" className={!isCustomColors ? 'active' : ''} onClick={() => update('customColors', null)}>
+            <SwatchBook aria-hidden="true" />
+            Curated
+          </button>
+          <button type="button" className={isCustomColors ? 'active' : ''} onClick={enableCustomColors}>
+            <SlidersHorizontal aria-hidden="true" />
+            Custom
+          </button>
         </div>
 
         {!isCustomColors && (
@@ -118,7 +144,9 @@ export default function DashboardForm({ form, setForm, types, palettes, onSubmit
                   className={`palette-swatch ${form.paletteId === p.id ? 'active' : ''}`}
                   style={{ background: `linear-gradient(135deg, ${p.vars['--color-primary']} 50%, ${p.vars['--color-bg']} 50%)` }}
                   onClick={() => update('paletteId', p.id)}
-                />
+                >
+                  {form.paletteId === p.id && <Check className="palette-swatch-check" aria-hidden="true" />}
+                </button>
               ))}
             </div>
             {activePalette && <p className="palette-caption">{activePalette.name} - {activePalette.description}</p>}
@@ -130,14 +158,17 @@ export default function DashboardForm({ form, setForm, types, palettes, onSubmit
             {COLOR_FIELDS.map(([key, label]) => (
               <label key={key} className="custom-color-field">
                 <input type="color" value={form.customColors[key]} onChange={(e) => updateCustomColor(key, e.target.value)} />
-                <span>{label}</span>
+                <span className="custom-color-field-text">
+                  <span>{label}</span>
+                  <span className="custom-color-hex">{form.customColors[key]}</span>
+                </span>
               </label>
             ))}
           </div>
         )}
       </div>
 
-      <div className="section-label">Layout</div>
+      <div className="section-label"><Columns3 aria-hidden="true" />Layout</div>
 
       <label className="field">
         <span className="field-label">Sidebar nav items (comma-separated)</span>
@@ -153,18 +184,22 @@ export default function DashboardForm({ form, setForm, types, palettes, onSubmit
         <p className="field-hint">Values shown are clearly-labeled sample data, not real numbers.</p>
       </label>
 
-      <div className="section-label">Voice</div>
+      <div className="section-label"><Speech aria-hidden="true" />Voice</div>
 
       <label className="field">
         <span className="field-label">Tone</span>
-        <select value={form.fields.tone} onChange={(e) => updateField('tone', e.target.value)}>
-          <option value="professional">Professional</option>
-          <option value="friendly">Friendly</option>
-          <option value="premium">Premium</option>
-        </select>
+        <span className="select-wrap">
+          <select value={form.fields.tone} onChange={(e) => updateField('tone', e.target.value)}>
+            <option value="professional">Professional</option>
+            <option value="friendly">Friendly</option>
+            <option value="premium">Premium</option>
+          </select>
+          <ChevronDown className="select-chevron" aria-hidden="true" />
+        </span>
       </label>
 
       <button type="submit" className="generate-btn" disabled={loading}>
+        {loading ? <Loader2 className="spin" aria-hidden="true" /> : <Wand2 aria-hidden="true" />}
         {loading ? 'Generating\u2026' : 'Generate dashboard'}
       </button>
     </form>

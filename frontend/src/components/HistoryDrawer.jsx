@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Inbox, CircleAlert, Loader2, Trash2, X } from 'lucide-react'
 import { deleteDraft as deleteDraftApi, fetchDrafts } from '../api.js'
 
 function timeAgo(isoString) {
@@ -54,16 +55,22 @@ export default function HistoryDrawer({ open, onClose, onLoad, siteKinds, palett
         <div className="drawer-header">
           <h2>Drafts</h2>
           <button type="button" className="drawer-close" onClick={onClose} aria-label="Close drafts panel">
-            &times;
+            <X aria-hidden="true" />
           </button>
         </div>
 
-        {loading && <p className="drawer-status">Loading&hellip;</p>}
-        {error && <p className="error-text">{error}</p>}
-        {!loading && drafts.length === 0 && !error && (
+        {loading && (
           <p className="drawer-status">
-            No saved drafts yet. Generate a site and it&rsquo;ll show up here automatically.
+            <Loader2 className="spin" aria-hidden="true" />
+            Loading&hellip;
           </p>
+        )}
+        {error && <p className="error-text"><CircleAlert aria-hidden="true" />{error}</p>}
+        {!loading && drafts.length === 0 && !error && (
+          <div className="drawer-empty">
+            <Inbox aria-hidden="true" />
+            <p>No saved drafts yet. Generate a site and it&rsquo;ll show up here automatically.</p>
+          </div>
         )}
 
         <ul className="drawer-list">
@@ -87,7 +94,7 @@ export default function HistoryDrawer({ open, onClose, onLoad, siteKinds, palett
                   onClick={() => handleDelete(d.id)}
                   disabled={deletingId === d.id}
                 >
-                  {deletingId === d.id ? '\u2026' : '\u00d7'}
+                  {deletingId === d.id ? <Loader2 className="spin" aria-hidden="true" /> : <Trash2 aria-hidden="true" />}
                 </button>
               </li>
             )

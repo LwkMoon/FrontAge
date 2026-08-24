@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { FilePlus2, History, WifiOff } from 'lucide-react'
 import KindSelector from './components/KindSelector.jsx'
 import BusinessForm from './components/BusinessForm.jsx'
 import PortfolioForm from './components/PortfolioForm.jsx'
@@ -130,27 +131,41 @@ export default function App() {
     <div className="app">
       <header className="app-header">
         <div className="brand">
-          <svg className="brand-mark" width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" strokeWidth="1.4">
-            <circle cx="13" cy="13" r="8" />
-            <path d="M13 1v6M13 19v6M1 13h6M19 13h6" />
-            <circle cx="13" cy="13" r="1.8" fill="currentColor" stroke="none" />
-          </svg>
+          <span className="brand-mark-wrap">
+            <svg className="brand-mark" width="20" height="20" viewBox="0 0 26 26" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <circle cx="13" cy="13" r="8" />
+              <path d="M13 1v6M13 19v6M1 13h6M19 13h6" />
+              <circle cx="13" cy="13" r="1.8" fill="currentColor" stroke="none" />
+            </svg>
+          </span>
           <div>
             <h1>Frontage</h1>
             <p className="brand-sub">SITES, PORTFOLIOS &amp; DASHBOARDS - DRAFT TO ZIP</p>
           </div>
         </div>
         <div className="header-actions">
-          <span className={`provider-badge ${meta.activeProvider ? 'active' : ''}`}>{providerLabel}</span>
-          <button type="button" className="header-btn" onClick={handleNewSite}>New site</button>
-          <button type="button" className="header-btn" onClick={() => setHistoryOpen(true)}>Drafts</button>
+          <span className={`provider-badge ${meta.activeProvider ? 'active' : ''}`}>
+            <span className="badge-dot" aria-hidden="true" />
+            <span>{providerLabel}</span>
+          </span>
+          <button type="button" className="header-btn" onClick={handleNewSite}>
+            <FilePlus2 aria-hidden="true" />
+            New site
+          </button>
+          <button type="button" className="header-btn" onClick={() => setHistoryOpen(true)}>
+            <History aria-hidden="true" />
+            Drafts
+          </button>
         </div>
       </header>
 
       {metaError && (
         <div className="meta-error">
-          Couldn&rsquo;t reach the backend at the configured API URL. Make sure the Flask
-          server is running (<code>python app.py</code> in <code>backend/</code>). ({metaError})
+          <WifiOff className="meta-error-icon" aria-hidden="true" />
+          <p>
+            Couldn&rsquo;t reach the backend at the configured API URL. Make sure the Flask
+            server is running (<code>python app.py</code> in <code>backend/</code>). ({metaError})
+          </p>
         </div>
       )}
 

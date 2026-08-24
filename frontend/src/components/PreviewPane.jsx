@@ -1,3 +1,5 @@
+import { CircleAlert, Download, LayoutTemplate, Loader2, Lock, RotateCw } from 'lucide-react'
+
 const PROVIDER_LABELS = { anthropic: 'Claude', openai: 'OpenAI', gemini: 'Gemini' }
 
 function currentTitle(form) {
@@ -6,6 +8,11 @@ function currentTitle(form) {
   if (form.siteKind === 'portfolio') return f.name
   if (form.siteKind === 'dashboard') return f.productName
   return ''
+}
+
+function fakeDomain(title) {
+  const slug = (title || '').trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+  return slug ? `${slug}.com` : 'yoursite.com'
 }
 
 export default function PreviewPane({ form, types, palettes, site, loading, downloading, error, onRegenerate, onDownload }) {
@@ -26,47 +33,71 @@ export default function PreviewPane({ form, types, palettes, site, loading, down
       </h2>
 
       <div className="title-block">
-        <div className="title-block-field">
-          <span>TITLE</span>
-          <strong>{currentTitle(form) || '\u2014'}</strong>
-        </div>
-        <div className="title-block-field">
-          <span>TYPE</span>
-          <strong>{typeLabel}</strong>
-        </div>
-        <div className="title-block-field">
-          <span>PALETTE</span>
-          <strong>{paletteName}</strong>
-        </div>
-        <div className="title-block-field">
-          <span>COPY</span>
-          <strong className={site?.aiGenerated ? 'copy-ai' : ''}>{copyStatus}</strong>
+        <span className="title-block-tick tl" aria-hidden="true" />
+        <span className="title-block-tick tr" aria-hidden="true" />
+        <span className="title-block-tick bl" aria-hidden="true" />
+        <span className="title-block-tick br" aria-hidden="true" />
+        <div className="title-block-grid">
+          <div className="title-block-field">
+            <span>TITLE</span>
+            <strong>{currentTitle(form) || '\u2014'}</strong>
+          </div>
+          <div className="title-block-field">
+            <span>TYPE</span>
+            <strong>{typeLabel}</strong>
+          </div>
+          <div className="title-block-field">
+            <span>PALETTE</span>
+            <strong>{paletteName}</strong>
+          </div>
+          <div className="title-block-field">
+            <span>COPY</span>
+            <strong className={site?.aiGenerated ? 'copy-ai' : ''}>{copyStatus}</strong>
+          </div>
         </div>
       </div>
 
       <div className="browser-frame">
         <div className="browser-chrome">
-          <span className="dot" /><span className="dot" /><span className="dot" />
+          <span className="chrome-dots">
+            <span className="dot dot-red" />
+            <span className="dot dot-amber" />
+            <span className="dot dot-green" />
+          </span>
+          <div className="address-bar">
+            <Lock aria-hidden="true" />
+            <span>{fakeDomain(currentTitle(form))}</span>
+          </div>
         </div>
         <div className="browser-viewport">
           {!site && !loading && (
-            <div className="empty-state">Fill in the details and generate a site to preview it here.</div>
+            <div className="empty-state">
+              <LayoutTemplate className="empty-state-icon" aria-hidden="true" />
+              <p>Fill in the details and generate a site to preview it here.</p>
+            </div>
           )}
-          {loading && <div className="empty-state">Building your site&hellip;</div>}
+          {loading && (
+            <div className="empty-state">
+              <Loader2 className="empty-state-icon spin" aria-hidden="true" />
+              <p>Building your site&hellip;</p>
+            </div>
+          )}
           {site && !loading && (
             <iframe title="Site preview" srcDoc={site.previewHtml} className="preview-iframe" />
           )}
         </div>
       </div>
 
-      {error && <p className="error-text">{error}</p>}
+      {error && <p className="error-text"><CircleAlert aria-hidden="true" />{error}</p>}
 
       {site && (
         <div className="preview-actions">
           <button type="button" onClick={onRegenerate} disabled={loading}>
+            <RotateCw aria-hidden="true" />
             Regenerate copy
           </button>
           <button type="button" className="primary" onClick={onDownload} disabled={downloading}>
+            {downloading ? <Loader2 className="spin" aria-hidden="true" /> : <Download aria-hidden="true" />}
             {downloading ? 'Preparing ZIP\u2026' : 'Download ZIP'}
           </button>
         </div>
