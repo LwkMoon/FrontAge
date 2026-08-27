@@ -1,15 +1,15 @@
 /* ==========================================================================
-   FRONTAGE — "The Drafting Console"
+   FRONTAGE - "The Drafting Console"
    ----------------------------------------------------------------------
    A precision instrument for drafting sites: dark control-room surfaces,
    a burnished brass signature accent, and technical/spec-sheet details
-   (registration marks, title blocks) borrowed from print production —
+   (registration marks, title blocks) borrowed from print production -
    the same world "Frontage" and "draft" already point to.
    ========================================================================== */
 
 /* ---------- 1. Design tokens ---------- */
 :root {
-  /* Surfaces — elevation scale, deep ink-navy */
+  /* Surfaces - elevation scale, deep ink-navy */
   --bg: #0a0e15;
   --surface: #12161f;
   --surface-raised: #181d28;
@@ -25,14 +25,14 @@
   --paper-dim: #8790a3;
   --paper-faint: #545d70;
 
-  /* Signature accent — brass / foil stamp */
+  /* Signature accent - brass / foil stamp */
   --brass: #d8a85f;
   --brass-bright: #e9c480;
   --brass-soft: rgba(216, 168, 95, 0.12);
   --brass-soft-strong: rgba(216, 168, 95, 0.22);
   --on-brass: #191305;
 
-  /* Secondary accent — interactive / focus */
+  /* Secondary accent - interactive / focus */
   --teal: #57c2b7;
   --teal-soft: rgba(87, 194, 183, 0.14);
 
@@ -164,7 +164,7 @@ code {
   background: #414c62;
 }
 
-/* Universal keyboard focus ring — buttons, chips, tabs, links */
+/* Universal keyboard focus ring - buttons, chips, tabs, links */
 button:focus-visible,
 a:focus-visible,
 [tabindex]:focus-visible {
