@@ -7,7 +7,7 @@ Add a new palette here and it shows up automatically as a swatch in the UI.
 PALETTES = {
     "brass-gold": {
         "name": "Brass & Gold",
-        "description": "Deep charcoal with warm brass accents \u2014 premium and upscale.",
+        "description": "Deep charcoal with warm brass accents - premium and upscale.",
         "vars": {
             "--color-bg": "#12100e",
             "--color-surface": "#1c1916",
@@ -19,7 +19,7 @@ PALETTES = {
     },
     "ocean-teal": {
         "name": "Ocean Teal",
-        "description": "Deep navy with a bright teal accent \u2014 trustworthy and modern.",
+        "description": "Deep navy with a bright teal accent - trustworthy and modern.",
         "vars": {
             "--color-bg": "#0b1622",
             "--color-surface": "#122436",
@@ -31,7 +31,7 @@ PALETTES = {
     },
     "sage-cream": {
         "name": "Sage & Cream",
-        "description": "Soft sage green on warm cream \u2014 calm and approachable.",
+        "description": "Soft sage green on warm cream - calm and approachable.",
         "vars": {
             "--color-bg": "#faf7f0",
             "--color-surface": "#ffffff",
@@ -43,7 +43,7 @@ PALETTES = {
     },
     "rose-charcoal": {
         "name": "Rose & Charcoal",
-        "description": "Muted rose against charcoal \u2014 soft but confident.",
+        "description": "Muted rose against charcoal - soft but confident.",
         "vars": {
             "--color-bg": "#1a1418",
             "--color-surface": "#241c22",
@@ -55,7 +55,7 @@ PALETTES = {
     },
     "classic-blue": {
         "name": "Classic Blue",
-        "description": "Navy and white \u2014 safe, professional, works for any local business.",
+        "description": "Navy and white - safe, professional, works for any local business.",
         "vars": {
             "--color-bg": "#ffffff",
             "--color-surface": "#f4f6f9",
@@ -67,7 +67,7 @@ PALETTES = {
     },
     "deep-emerald": {
         "name": "Deep Emerald",
-        "description": "Forest green with a warm gold accent \u2014 grounded and trustworthy.",
+        "description": "Forest green with a warm gold accent - grounded and trustworthy.",
         "vars": {
             "--color-bg": "#0f1f18",
             "--color-surface": "#17291f",
@@ -79,7 +79,7 @@ PALETTES = {
     },
     "slate-amber": {
         "name": "Slate & Amber",
-        "description": "Cool graphite with an amber accent \u2014 sturdy and no-nonsense.",
+        "description": "Cool graphite with an amber accent - sturdy and no-nonsense.",
         "vars": {
             "--color-bg": "#1a1d24",
             "--color-surface": "#23272f",
@@ -91,7 +91,7 @@ PALETTES = {
     },
     "plum-blush": {
         "name": "Plum & Blush",
-        "description": "Deep plum with a soft blush accent \u2014 warm and a little glamorous.",
+        "description": "Deep plum with a soft blush accent - warm and a little glamorous.",
         "vars": {
             "--color-bg": "#1f1420",
             "--color-surface": "#2a1c2c",

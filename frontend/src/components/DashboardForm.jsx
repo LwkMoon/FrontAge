@@ -96,7 +96,7 @@ export default function DashboardForm({ form, setForm, types, palettes, onSubmit
       </div>
 
       <label className="field">
-        <span className="field-label">What does it do? (optional \u2014 helps the AI write the welcome copy)</span>
+        <span className="field-label">What does it do? (optional - helps the AI write the welcome copy)</span>
         <input type="text" value={form.fields.descriptionHint} onChange={(e) => updateField('descriptionHint', e.target.value)} placeholder="Analytics for small SaaS teams" />
       </label>
 

@@ -16,10 +16,10 @@ function fakeDomain(title) {
 }
 
 export default function PreviewPane({ form, types, palettes, site, loading, downloading, error, onRegenerate, onDownload }) {
-  const typeLabel = types.find((t) => t.id === form.typeId)?.label || '\u2014'
-  const paletteName = form.customColors ? 'Custom' : (palettes.find((p) => p.id === form.paletteId)?.name || '\u2014')
+  const typeLabel = types.find((t) => t.id === form.typeId)?.label || '-'
+  const paletteName = form.customColors ? 'Custom' : (palettes.find((p) => p.id === form.paletteId)?.name || '-')
 
-  let copyStatus = '\u2014'
+  let copyStatus = '-'
   if (site) {
     copyStatus = site.aiGenerated
       ? `AI (${PROVIDER_LABELS[site.aiProvider] || site.aiProvider})`
@@ -40,7 +40,7 @@ export default function PreviewPane({ form, types, palettes, site, loading, down
         <div className="title-block-grid">
           <div className="title-block-field">
             <span>TITLE</span>
-            <strong>{currentTitle(form) || '\u2014'}</strong>
+            <strong>{currentTitle(form) || '-'}</strong>
           </div>
           <div className="title-block-field">
             <span>TYPE</span>

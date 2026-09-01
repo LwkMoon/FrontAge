@@ -125,7 +125,7 @@ export default function App() {
   const FormComponent = FORM_COMPONENTS[form.siteKind]
   const providerLabel = meta.activeProvider
     ? `Powered by ${meta.providerDisplayNames[meta.activeProvider] || meta.activeProvider}`
-    : 'No AI key set \u2014 using placeholder copy'
+    : 'No AI key set - using placeholder copy'
 
   return (
     <div className="app">

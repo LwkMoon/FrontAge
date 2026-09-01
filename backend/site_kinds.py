@@ -10,7 +10,7 @@ from portfolio_types import PORTFOLIO_TYPES
 SITE_KINDS = {
     "business": {
         "label": "Business",
-        "description": "Storefront sites for local businesses \u2014 restaurants, clinics, shops.",
+        "description": "Storefront sites for local businesses - restaurants, clinics, shops.",
         "template": "business.html.jinja",
         "types": BUSINESS_TYPES,
     },

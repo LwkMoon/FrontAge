@@ -33,7 +33,7 @@ BUSINESS_TYPES = {
             ),
             "cta_text": "Order on WhatsApp",
             "highlights": [
-                {"title": "Made Fresh Daily", "description": "Nothing sits around \u2014 everything is cooked to order."},
+                {"title": "Made Fresh Daily", "description": "Nothing sits around - everything is cooked to order."},
                 {"title": "Fast Delivery", "description": "Quick turnaround across the local area."},
                 {"title": "Family Recipes", "description": "Recipes passed down and perfected over time."},
                 {"title": "Easy Ordering", "description": "Order in seconds, right from WhatsApp."},
@@ -47,7 +47,7 @@ BUSINESS_TYPES = {
         "highlight_section_label": "How we help",
         "highlight_count": 4,
         "contact_heading": "Need something today?",
-        "contact_subtext": "Message us on WhatsApp \u2014 we'll confirm availability and delivery.",
+        "contact_subtext": "Message us on WhatsApp - we'll confirm availability and delivery.",
         "icon_svg": (
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">'
             '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v9M7.5 12h9"/></svg>'
@@ -114,7 +114,7 @@ BUSINESS_TYPES = {
         ),
         "fallback_copy": {
             "headline": "Reliable Help, When You Need It",
-            "tagline": "Straightforward, quality work \u2014 no surprises.",
+            "tagline": "Straightforward, quality work - no surprises.",
             "about": (
                 "We take on jobs big and small, and we treat every client's home or "
                 "project like our own. Clear communication, fair pricing, and work you "
@@ -166,7 +166,7 @@ BUSINESS_TYPES = {
         "highlight_section_label": "Why shop with us",
         "highlight_count": 4,
         "contact_heading": "Looking for something specific?",
-        "contact_subtext": "Message us on WhatsApp \u2014 we'll check what's in stock.",
+        "contact_subtext": "Message us on WhatsApp - we'll check what's in stock.",
         "icon_svg": (
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">'
             '<path d="M4 8l1.5-4h13L20 8"/><path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8z"/>'
@@ -177,7 +177,7 @@ BUSINESS_TYPES = {
             "tagline": "A carefully chosen selection, fair prices, and friendly service.",
             "about": (
                 "We stock a range of quality products and update it regularly based on "
-                "what our customers ask for. Come by or message us \u2014 we're happy to help "
+                "what our customers ask for. Come by or message us - we're happy to help "
                 "you find exactly what you need."
             ),
             "cta_text": "Message on WhatsApp",
@@ -204,7 +204,7 @@ BUSINESS_TYPES = {
         ),
         "fallback_copy": {
             "headline": "Find Your Next Property",
-            "tagline": "Honest advice on buying, selling, and renting \u2014 no pressure.",
+            "tagline": "Honest advice on buying, selling, and renting - no pressure.",
             "about": (
                 "We help families and investors find the right property, and help owners "
                 "get a fair deal when selling or renting. Every listing is verified before "
@@ -236,7 +236,7 @@ BUSINESS_TYPES = {
             "headline": "Learning That Actually Sticks",
             "tagline": "Small classes, dedicated teachers, and real progress you can see.",
             "about": (
-                "We focus on understanding, not just memorizing \u2014 with small class sizes "
+                "We focus on understanding, not just memorizing - with small class sizes "
                 "so every student gets real attention. Regular progress updates keep "
                 "parents in the loop too."
             ),

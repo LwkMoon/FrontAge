@@ -122,7 +122,7 @@ export default function PortfolioForm({ form, setForm, types, palettes, onSubmit
       </label>
 
       <label className="field">
-        <span className="field-label">A bit about you (optional \u2014 helps the AI write your bio)</span>
+        <span className="field-label">A bit about you (optional - helps the AI write your bio)</span>
         <input type="text" value={form.fields.bioHint} onChange={(e) => updateField('bioHint', e.target.value)} placeholder="I like building tools and games" />
       </label>
 
