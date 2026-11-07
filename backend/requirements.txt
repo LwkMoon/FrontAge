@@ -5,3 +5,4 @@ anthropic
 openai
 google-genai
 Pillow
+psycopg[binary]>=3.2,<4
