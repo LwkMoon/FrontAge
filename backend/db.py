@@ -1,16 +1,8 @@
-"""SQLite storage for drafts.
+"""SQLite (local) / PostgreSQL (deployed) storage for drafts.
 
-Every generated site is auto-saved here, so past work sticks around between
-sessions instead of disappearing when the tab closes.
-
-Business, portfolio, and dashboard drafts have very different input fields,
-so those live in a single `fields_json` blob rather than one column per
-field. `title`, `site_kind`, `type_id`, and the palette/logo columns are
-shared across every kind and used to render the drafts list without needing
-to parse the blob.
-
-Raw sqlite3, no ORM, on purpose: this is a single-user local tool, and a
-short-lived connection per call is simpler to reason about than pooling.
+Local development keeps the zero-setup SQLite experience. When DATABASE_URL
+points to PostgreSQL, the same repository uses a persistent hosted database,
+which is suitable for stateless Vercel Functions.
 """
 import json
 import os
@@ -21,36 +13,104 @@ from datetime import datetime, timezone
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "drafts.db")
 
 
+def _database_url():
+    return os.environ.get("DATABASE_URL", "").strip()
+
+
+def _uses_postgres():
+    url = _database_url()
+    return url.startswith(("postgres://", "postgresql://"))
+
+
+class _PostgresConnection:
+    """Small adapter so the existing queries can share `?` placeholders."""
+
+    def __init__(self, connection):
+        self._connection = connection
+
+    def execute(self, query, params=()):
+        return self._connection.execute(query.replace("?", "%s"), params)
+
+
 @contextmanager
 def _connect():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    url = _database_url()
+
+    if url:
+        if not url.startswith(("postgres://", "postgresql://")):
+            raise RuntimeError(
+                "DATABASE_URL must be a PostgreSQL connection URL. "
+                "Leave it unset to use local SQLite."
+            )
+
+        import psycopg
+        from psycopg.rows import dict_row
+
+        connection = psycopg.connect(
+            url,
+            row_factory=dict_row,
+            connect_timeout=10,
+        )
+        try:
+            yield _PostgresConnection(connection)
+            connection.commit()
+        except Exception:
+            connection.rollback()
+            raise
+        finally:
+            connection.close()
+        return
+
+    connection = sqlite3.connect(DB_PATH, timeout=10)
+    connection.row_factory = sqlite3.Row
     try:
-        yield conn
-        conn.commit()
+        yield connection
+        connection.commit()
+    except Exception:
+        connection.rollback()
+        raise
     finally:
-        conn.close()
+        connection.close()
 
 
 def init_db():
     with _connect() as conn:
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS drafts (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                site_kind TEXT NOT NULL,
-                type_id TEXT NOT NULL,
-                title TEXT NOT NULL,
-                palette_id TEXT,
-                custom_colors TEXT,
-                logo_data_uri TEXT,
-                fields_json TEXT NOT NULL,
-                copy_json TEXT NOT NULL,
-                ai_generated INTEGER NOT NULL DEFAULT 0,
-                ai_provider TEXT,
-                created_at TEXT NOT NULL,
-                updated_at TEXT NOT NULL
-            )
-        """)
+        if _uses_postgres():
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS drafts (
+                    id BIGSERIAL PRIMARY KEY,
+                    site_kind TEXT NOT NULL,
+                    type_id TEXT NOT NULL,
+                    title TEXT NOT NULL,
+                    palette_id TEXT,
+                    custom_colors TEXT,
+                    logo_data_uri TEXT,
+                    fields_json TEXT NOT NULL,
+                    copy_json TEXT NOT NULL,
+                    ai_generated INTEGER NOT NULL DEFAULT 0,
+                    ai_provider TEXT,
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT NOT NULL
+                )
+            """)
+        else:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS drafts (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    site_kind TEXT NOT NULL,
+                    type_id TEXT NOT NULL,
+                    title TEXT NOT NULL,
+                    palette_id TEXT,
+                    custom_colors TEXT,
+                    logo_data_uri TEXT,
+                    fields_json TEXT NOT NULL,
+                    copy_json TEXT NOT NULL,
+                    ai_generated INTEGER NOT NULL DEFAULT 0,
+                    ai_provider TEXT,
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT NOT NULL
+                )
+            """)
 
 
 def _now():
@@ -70,18 +130,30 @@ def _row_to_dict(row):
 
 def create_draft(data):
     now = _now()
+    query = """INSERT INTO drafts
+       (site_kind, type_id, title, palette_id, custom_colors, logo_data_uri,
+        fields_json, copy_json, ai_generated, ai_provider, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+    params = (
+        data["site_kind"],
+        data["type_id"],
+        data["title"],
+        data.get("palette_id"),
+        json.dumps(data["custom_colors"]) if data.get("custom_colors") else None,
+        data.get("logo_data_uri"),
+        json.dumps(data.get("fields", {})),
+        json.dumps(data.get("copy")),
+        1 if data.get("ai_generated") else 0,
+        data.get("ai_provider"),
+        now,
+        now,
+    )
+
     with _connect() as conn:
-        cur = conn.execute(
-            """INSERT INTO drafts
-               (site_kind, type_id, title, palette_id, custom_colors, logo_data_uri,
-                fields_json, copy_json, ai_generated, ai_provider, created_at, updated_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            (data["site_kind"], data["type_id"], data["title"], data.get("palette_id"),
-             json.dumps(data["custom_colors"]) if data.get("custom_colors") else None,
-             data.get("logo_data_uri"), json.dumps(data.get("fields", {})),
-             json.dumps(data.get("copy")), 1 if data.get("ai_generated") else 0,
-             data.get("ai_provider"), now, now),
-        )
+        if _uses_postgres():
+            cur = conn.execute(query + " RETURNING id", params)
+            return cur.fetchone()["id"]
+        cur = conn.execute(query, params)
         return cur.lastrowid
 
 
@@ -93,11 +165,20 @@ def update_draft(draft_id, data):
                logo_data_uri = ?, fields_json = ?, copy_json = ?, ai_generated = ?,
                ai_provider = ?, updated_at = ?
                WHERE id = ?""",
-            (data["site_kind"], data["type_id"], data["title"], data.get("palette_id"),
-             json.dumps(data["custom_colors"]) if data.get("custom_colors") else None,
-             data.get("logo_data_uri"), json.dumps(data.get("fields", {})),
-             json.dumps(data.get("copy")), 1 if data.get("ai_generated") else 0,
-             data.get("ai_provider"), _now(), draft_id),
+            (
+                data["site_kind"],
+                data["type_id"],
+                data["title"],
+                data.get("palette_id"),
+                json.dumps(data["custom_colors"]) if data.get("custom_colors") else None,
+                data.get("logo_data_uri"),
+                json.dumps(data.get("fields", {})),
+                json.dumps(data.get("copy")),
+                1 if data.get("ai_generated") else 0,
+                data.get("ai_provider"),
+                _now(),
+                draft_id,
+            ),
         )
         return cur.rowcount > 0
 
@@ -114,7 +195,7 @@ def list_drafts():
             """SELECT id, site_kind, type_id, title, palette_id, updated_at
                FROM drafts ORDER BY updated_at DESC"""
         ).fetchall()
-        return [dict(r) for r in rows]
+        return [dict(row) for row in rows]
 
 
 def delete_draft(draft_id):
