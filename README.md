@@ -211,6 +211,49 @@ following the existing pattern.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide.
 
+## Deploy to Vercel
+
+FrontAge can run as one Vercel Project with two coordinated Vercel Services: the
+React + Vite frontend and the Python + Flask backend. The root
+[`vercel.json`](vercel.json) sends `/api/*` requests to Flask and all other
+requests to the frontend. Both services share one deployment, preview URL, and
+domain.
+
+1. Import `LwkMoon/FrontAge` into Vercel. Keep the project Root Directory at
+   the repository root so Vercel can read the root `vercel.json`.
+2. Connect a hosted PostgreSQL database (for example, Neon through the Vercel
+   Marketplace) and make sure its connection string is available as
+   `DATABASE_URL` in Preview and Production.
+3. Add at least one AI provider key to the Vercel project environment:
+   `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, or `GEMINI_API_KEY`. These are
+   server-side variables; never add the `VITE_` prefix.
+4. Deploy the project. The frontend calls the backend through same-origin
+   `/api/*` URLs, so no separate API domain or CORS configuration is needed.
+
+### Database behavior
+
+- Local development uses the existing SQLite file when `DATABASE_URL` is unset.
+- When `DATABASE_URL` contains a PostgreSQL connection URL, drafts are stored
+  in PostgreSQL instead. This is the persistent storage path for Vercel.
+- Existing local SQLite drafts are not migrated automatically. Export or
+  recreate any drafts you need before switching databases.
+
+### Local development
+
+Run Flask from `backend/` on port 5000, then run the Vite development server
+from `frontend/` on port 5173. Vite proxies `/api/*` to Flask, so the frontend
+does not need a local `VITE_API_URL`.
+
+### Important: access control
+
+The current application is designed as a local, single-user tool. It does not
+have login, per-user draft isolation, or API usage limits. A public deployment
+would let visitors access the shared draft collection and make generation
+requests using the configured AI provider. Keep the deployment protected
+(private access / Vercel Deployment Protection) until authentication,
+per-user data isolation, and generation quotas or rate limits are implemented.
+
+
 ## Roadmap
 
 - [ ] Multi-page export (Home / About / Contact) as an alternative to single-page
